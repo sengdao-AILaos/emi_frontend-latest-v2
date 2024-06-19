@@ -17,7 +17,9 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { ProgressSpinner } from 'primereact/progressspinner';
 
-const ThreeInOneCredit = () => {
+
+
+const TwoInOneCredit = () => {
   const [insuredList,setInsuredList ] = useState([]);
    const [filters, setFilters] = useState({
       global: {value: null, matchMode: FilterMatchMode.CONTAINS},
@@ -133,7 +135,7 @@ const ThreeInOneCredit = () => {
               <div
                 className='flex items-center text-green-600 text-2xl float-left'
               >
-                3-IN-1 CREDIT LIFE
+                2-IN-1 CREDIT LIFE
               </div>
           </div>
       </section>
@@ -263,14 +265,12 @@ const ThreeInOneCredit = () => {
                                 filters={filters}
                                 scrollable
                                 scrollHeight="600px"
-                                size="small"
-                                stripedRows
                                 virtualScrollerOptions={{ itemSize: 50 }}
                                 tableStyle={{ minWidth: '70rem' }}
                                 loading={isLoading}
                                 className='px-6'
                                 body={<div>
-                                  <ProgressSpinner  />
+                                    <ProgressSpinner  />
                                 </div>}
                               >
                                 {columns.map((col)=>(
@@ -280,8 +280,9 @@ const ThreeInOneCredit = () => {
                                       header={col.header} 
                                       sortable 
                                       editMode="cell"
-                                    />  
-                                  ))
+                                    /> 
+                                    
+                                    ))
                                 }
                                 
                                 <Column
@@ -471,4 +472,4 @@ const ThreeInOneCredit = () => {
   )
 }
 
-export default ThreeInOneCredit
+export default TwoInOneCredit

@@ -15,25 +15,21 @@ import {Dialog } from 'primereact/dialog';
 import { Calendar } from 'primereact/calendar';
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
-import { ProgressSpinner } from 'primereact/progressspinner';
 
 
-
-const TwoInOneCredit = () => {
+const ThreeInOneCredit = () => {
   const [insuredList,setInsuredList ] = useState([]);
-   const [filters, setFilters] = useState({
-      global: {value: null, matchMode: FilterMatchMode.CONTAINS},
-   });
+  const [filters, setFilters] = useState({
+    global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+  });
 
-   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
    
   useEffect(()=>{
-   fetchInsuredList();
-    
+    fetchInsuredList();
   },[]);
 
   const fetchInsuredList = async()=>{
-   setIsLoading(true);
     try{
       const response = await fetch('http://localhost:8080/api/insured');
       const data = await response.json();
@@ -93,19 +89,14 @@ const TwoInOneCredit = () => {
    ];
 
    const [selectedData, setSelectedData] = useState(null);
-   const [visible, setVisible] = useState(false);
    const [dialogVisible, setDialogVisible] = useState(false);
    
 
    const openDialog = (rowData) =>{
       setSelectedData(rowData);
-      setVisible(true);
    };
 
-   const closeDialog = () => {
-      setVisible(false);
-      setSelectedData(null);
-   };
+
 
   const dialogFooterTemplate = () => {
       return (
@@ -141,7 +132,7 @@ const TwoInOneCredit = () => {
       </section>
       <section className='overflow-auto'>
         <div className="grid grid-cols-3 md:grid-cols-70/30 w-full gap-3 ">
-          <div className="bg-white p-6 shadow-md text-center md:text-left ml-5 space-y-2">
+          <div className="bg-white p-6 shadow-md text-center md:text-left ml-5 space-y-2"> {/* container 1 */}
             <div className="flex w-full items-center">
               <div className="w-4/5 mr-4">
                 <InputText
@@ -200,10 +191,9 @@ const TwoInOneCredit = () => {
                 className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
-
           </div>
-          <div className="col-span-2 bg-white p-6 shadow-md text-center md:text-left mr-5" >
-          
+          <div className="col-span-2 bg-white p-6 shadow-md text-center md:text-left mr-5" > {/* container 2 */}
+            div2
             <div className="flex justify-center mb-5 ">
               <DataTable
                 value={insuredList} 
@@ -214,15 +204,27 @@ const TwoInOneCredit = () => {
                 scrollHeight="250px"
                 stripedRows              
               >  
-                <Column field="" header="Policy No." sortable 
-                  body={<p>123ABC</p>}   
+                <Column 
+                  field="policyNumber" 
+                  header="Policy No." 
+                  sortable 
+                    
                 />
-                <Column field="inceptionDate" header="Entry Date"  sortable    />
-                <Column header="Created by"  sortable 
+                <Column 
+                  field="inceptionDate" 
+                  header="Entry Date"  
+                  sortable    
+                />
+                <Column 
+                  header="Created by"  
+                  sortable 
                   body={<p>John Doe</p>}
                 />
-                <Column header="No.Inured"  sortable 
-                  body={778} 
+                <Column 
+                  field='loanId'
+                  header="No.Inured"  
+                  sortable 
+                  
                 />
                 <Column header="Actions"
                   body={(rowData) =>(
@@ -234,71 +236,6 @@ const TwoInOneCredit = () => {
                         dropdownIcon="pi pi-ellipsis-h"  
                         model={items2}   
                       />
-                      <Dialog
-                        visible={visible}
-                        maximized={true}
-                        contentStyle={{padding:10}}
-                        style={{ width: '100vw', height: '100vh', margin: 0}}
-                        onHide={closeDialog}
-                        className="p-dialog-maximized"
-                      >
-                      
-                        <div className="flex justify-end mx-5 mb-5">
-                          <div  >
-                            <IconField iconPosition="left">
-                              <InputIcon className="pi pi-search" style={{ marginRight: '0.5rem' }}> </InputIcon>
-                              <InputText 
-                                  onInput={(e)=>setFilters({
-                                    global: {value:e.target.value, matchMode:FilterMatchMode.CONTAINS}
-                                    })
-                                  }
-                                  placeholder="Search" 
-                                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                  style={{ paddingLeft: '3rem', width: '20rem' }}
-                              />
-                            </IconField>
-                          </div>
-                        </div>
-                        <div>
-                          {selectedData && (
-                              <DataTable value={insuredList}
-                                filters={filters}
-                                scrollable
-                                scrollHeight="600px"
-                                virtualScrollerOptions={{ itemSize: 50 }}
-                                tableStyle={{ minWidth: '70rem' }}
-                                loading={isLoading}
-                                className='px-6'
-                                body={<div>
-                                    <ProgressSpinner  />
-                                </div>}
-                              >
-                                {columns.map((col)=>(
-                                    <Column 
-                                      key={col.field} 
-                                      field={col.field} 
-                                      header={col.header} 
-                                      sortable 
-                                      editMode="cell"
-                                    /> 
-                                    
-                                    ))
-                                }
-                                
-                                <Column
-                                      header="Actions"
-                                      frozen
-                                      body={() => (
-                                          <div>
-                                            <TieredMenu model={items} popup ref={menu} breakpoint="767px" />
-                                            <SplitButton  dropdownIcon="pi pi-ellipsis-h" onClick={(e) => menu.current.toggle(e)} model={items} />
-                                          </div>
-                                      )}
-                                    />
-                              </DataTable>
-                          )}
-                        </div>
-                      </Dialog>
                     </section>
                   )}
                 />
@@ -306,122 +243,69 @@ const TwoInOneCredit = () => {
             </div>
           </div>
         </div>
-        <div className="bg-white p-6 shadow-md text-center md:text-left mt-6 m-5">
-          <div className="flex justify-center mb-5 ">
-              <DataTable
-                value={insuredList} 
-                className="w-full "
-                scrollable
-                scrollHeight="400px"
-                size="small"
-                stripedRows
-              >  
-                <Column field="" header="Policy No." sortable 
-                  body={<p>123ABC</p>}   
-                />
-                <Column field="inceptionDate" header="Entry Date"  sortable    />
-                <Column header="Created by"  sortable 
-                  body={<p>John Doe</p>}
-                />
-                <Column header="No.Inured"  sortable 
-                  body={778} 
-                />
-                <Column header="Actions"
-                  body={(rowData) =>(
-                    <section className="card flex justify-content-center">
-                      <Toast ref={toast}></Toast>
-                      <SplitButton 
-                        icon="pi pi-eye" 
-                        onClick={()=> openDialog(rowData)}
-                        dropdownIcon="pi pi-ellipsis-h"  
-                        model={items2}   
+        <div className="bg-white p-6 shadow-md text-center md:text-left mt-6 m-5">  {/* Div3 */}
+          <div className='text-2xl'>Insured Data</div>
+            <div>
+              {selectedData && (
+                <div>
+                  <div className="flex justify-end mx-5 mb-5">
+                    <IconField iconPosition="left">
+                      <InputIcon className="pi pi-search" style={{ marginRight: '0.5rem' }}> </InputIcon>
+                      <InputText 
+                        onInput={(e)=>setFilters({
+                          global: {value:e.target.value, matchMode:FilterMatchMode.CONTAINS}
+                          })
+                        }
+                        placeholder="Search" 
+                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        style={{ paddingLeft: '3rem', width: '20rem' }}
                       />
-                      <Dialog
-                        visible={visible}
-                        maximized={true}
-                        contentStyle={{padding:10}}
-                        style={{ width: '100vw', height: '100vh', margin: 0}}
-                        onHide={closeDialog}
-                        className="p-dialog-maximized"
-                      >
-                      
-                        <div className="flex justify-end mx-5 mb-5">
-                          <div  >
-                            <IconField iconPosition="left">
-                              <InputIcon className="pi pi-search" style={{ marginRight: '0.5rem' }}> </InputIcon>
-                              <InputText 
-                                  onInput={(e)=>setFilters({
-                                    global: {value:e.target.value, matchMode:FilterMatchMode.CONTAINS}
-                                    })
-                                  }
-                                  placeholder="Search" 
-                                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                  style={{ paddingLeft: '3rem', width: '20rem' }}
-                              />
-                            </IconField>
-                          </div>
-                        </div>
-                        <div>
-                          {/* {isLoading && (
-                              <div className="card flex justify-content-center">
-                                
-                              </div>
-                          )} */}
-                          {selectedData && (
-                              <DataTable value={insuredList}
-                                filters={filters}
-                                scrollable
-                                scrollHeight="600px"
-                                virtualScrollerOptions={{ itemSize: 50 }}
-                                tableStyle={{ minWidth: '70rem' }}
-                                loading={isLoading}
-                                className='px-6'
-                                body={<div>
-                                    <ProgressSpinner  />
-                                </div>}
-                              >
-                                {columns.map((col)=>(
-                                    <Column 
-                                      key={col.field} 
-                                      field={col.field} 
-                                      header={col.header} 
-                                      sortable 
-                                      editMode="cell"
-                                    /> 
-                                    
-                                    ))
-                                }
-                                
-                                <Column
-                                      header="Actions"
-                                      frozen
-                                      body={() => (
-                                          <div>
-                                            <TieredMenu model={items} popup ref={menu} breakpoint="767px" />
-                                            <SplitButton  dropdownIcon="pi pi-ellipsis-h" onClick={(e) => menu.current.toggle(e)} model={items} />
-                                          </div>
-                                      )}
-                                    />
-                              </DataTable>
-                          )}
-                        </div>
-                      </Dialog>
-                    </section>
-                  )}
-                />
-              </DataTable>
+                    </IconField>
+                  </div>
+                  <DataTable value={insuredList}
+                    filters={filters}
+                    scrollable
+                    scrollHeight="450px"
+                    size="small"
+                    stripedRows
+                    showGridlines
+                    virtualScrollerOptions={{ itemSize: 50 }}
+                    tableStyle={{ minWidth: '70rem' }}
+                    loading={isLoading}
+                    className='px-6'
+                  >
+                  {columns.map((col)=>(
+                    <Column 
+                      key={col.field} 
+                      field={col.field} 
+                      header={col.header} 
+                      sortable 
+                      editMode="cell"
+                    />  
+                  ))
+                  }
+                  <Column
+                    header="Actions"
+                    frozen
+                    body={() => (
+                      <div>
+                        <TieredMenu model={items} popup ref={menu} breakpoint="767px" />
+                        <SplitButton  dropdownIcon="pi pi-ellipsis-h" onClick={(e) => menu.current.toggle(e)} model={items} />
+                      </div>
+                    )}
+                  />
+                </DataTable>
+                </div>
+              )}
             </div>
         </div>
-        
-        
-        {/* ############### */}
         <div className="container mx-auto">
           <div className="card flex justify-content-center">
             <Dialog 
                 header="Add new insured list" visible={dialogVisible}  style={{ width: '50vw' }}
                 onHide={() => setDialogVisible(false)} 
                 footer={dialogFooterTemplate}
-                maximizable 
+                // maximizable 
                 >
                   <LoanInformationForm />
             </Dialog>
@@ -465,11 +349,10 @@ const TwoInOneCredit = () => {
           </div>
         </div>
       </section>
-      
     </section>
     </>
     
   )
 }
 
-export default TwoInOneCredit
+export default ThreeInOneCredit

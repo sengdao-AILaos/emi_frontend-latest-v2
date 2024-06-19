@@ -2,9 +2,22 @@
 
 const HomePage = () => {
   return (
-    <section className="flex flex-col h-full w-full bg-gray-50 font-roboto ">
-      <h1 className="m-8 text-3xl text-center">Homepage: Work in progress</h1>
+    <>
+    <section className='className="flex flex-col h-full w-full  bg-white font-roboto "'>
+      <section className='mb-7 '>
+        <div className="flex py-6 px-6 bg-gray-50 font-roboto shadow-md w-full">
+          <div
+            className='flex items-center text-green-600 text-2xl float-left'
+          >
+            EMI
+          </div>
+        </div>
+      </section>
+      <section className="text-2xl text-center">
+        Welcome: Work in progress
+      </section>
     </section>
+  </>
   )
 }
 

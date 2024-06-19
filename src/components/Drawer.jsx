@@ -118,12 +118,12 @@ const Drawer = () => {
                             key={index}
                             className={`flex items-center hover:bg-white cursor-pointer rounded-md gap-x-4 p-2 px-6 mt-2`}
                           >
-                          <NavLink
-                            to={subMenuItem.link}
-                            className="flex items-center"
-                          >
-                            {subMenuItem.title}
-                          </NavLink>
+                            <NavLink
+                              to={subMenuItem.link}
+                              className="flex items-center"
+                            >
+                              {subMenuItem.title}
+                            </NavLink>
                           </li>
                       ))}
                   </ul>
